@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Enquiries | {{ a.name }}{% endblock %}
+{% block body %}
+<div class="wrap block">
+  <h2>Enquiries ({{ rows|length }})</h2>
+  <div class="scroll">
+    <table>
+      <tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Course</th><th>Mode</th><th>Message</th><th>Date</th></tr>
+      {% for r in rows %}
+      <tr><td>{{ r.id }}</td><td>{{ r.name }}</td><td>{{ r.phone }}</td><td>{{ r.email }}</td><td>{{ r.course }}</td><td>{{ r.mode }}</td><td>{{ r.message }}</td><td>{{ r.created_at }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

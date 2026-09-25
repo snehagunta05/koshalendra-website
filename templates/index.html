@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block body %}
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"><span>{{ a.name }}</span></a>
+    <nav>
+      <a href="#about">About</a><a href="#courses">Courses</a>
+      <a href="#modes">Learning</a><a href="#contact">Contact</a>
+      <a class="btn small" href="#enroll">Enroll Now</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-in">
+    <div>
+      <span class="pill">{{ a.batch_text }}</span>
+      <h1>Your Journey in Tech <span class="grad">Starts Here</span></h1>
+      <p>{{ a.tagline }}. Practical training in cybersecurity, AI, and software, taught by experienced professionals in {{ a.location }}.</p>
+      <div class="row">
+        <a class="btn" href="#enroll">Secure Your Seat</a>
+        <a class="btn ghost" href="#courses">View Courses</a>
+      </div>
+    </div>
+    <img class="hero-logo" src="{{ url_for('static', filename='logo.png') }}" alt="{{ a.name }}">
+  </div>
+</section>
+
+<section class="wrap feats">
+  {% for t, d in features %}
+  <div class="card"><h3>{{ t }}</h3><p>{{ d }}</p></div>
+  {% endfor %}
+</section>
+
+<section class="wrap block" id="about">
+  <h2>About Us</h2>
+  <p class="lead">{{ a.name }} is a skill-development initiative of Koshalendra Foundation. We give students, graduates, job seekers and working professionals practical, affordable and industry-oriented technology education. We close the gap between college learning and what companies need through hands-on training, real projects and career guidance.</p>
+</section>
+
+<section class="alt" id="courses">
+  <div class="wrap block">
+    <h2>Our Courses</h2>
+    <div class="grid3">
+      {% for group, items in courses.items() %}
+      <div class="card course">
+        <h3>{{ group }}</h3>
+        <ul>{% for i in items %}<li>{{ i }}</li>{% endfor %}</ul>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="wrap block" id="modes">
+  <h2>Learn Your Way</h2>
+  <div class="grid3">
+    {% for t, d in modes %}<div class="card"><h3>{{ t }} Training</h3><p>{{ d }}</p></div>{% endfor %}
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap block two">
+    <div>
+      <h2>Who Can Join?</h2>
+      <ul class="tick">{% for w in who %}<li>{{ w }}</li>{% endfor %}</ul>
+    </div>
+    <div>
+      <h2>Why Choose Us?</h2>
+      <ul class="tick">{% for w in why %}<li>{{ w }}</li>{% endfor %}</ul>
+      <p class="note">Placement assistance and industry support do not constitute a guarantee of employment.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap block" id="enroll">
+  <h2>Enroll Now</h2>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<div class="flash {{ cat }}">{{ m }}</div>{% endfor %}
+  {% endwith %}
+  <form class="form" method="post" action="{{ url_for('enquire') }}">
+    <label>Full name<input name="name" required></label>
+    <label>Phone number<input name="phone" inputmode="numeric" required></label>
+    <label>Email (optional)<input type="email" name="email"></label>
+    <label>Course
+      <select name="course" required>
+        <option value="">Select a course</option>
+        {% for group, items in courses.items() %}
+        <optgroup label="{{ group }}">{% for i in items %}<option>{{ i }}</option>{% endfor %}</optgroup>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Preferred mode
+      <select name="mode"><option>Offline</option><option>Online</option><option>Hybrid</option></select>
+    </label>
+    <label class="full">Message (optional)<textarea name="message" rows="3"></textarea></label>
+    <button class="btn full" type="submit">Submit</button>
+  </form>
+</section>
+
+<footer id="contact">
+  <div class="wrap foot">
+    <div><strong>{{ a.name }}</strong><br>A Skill Development Initiative of Koshalendra Foundation<br>{{ a.location }}</div>
+    <div>{% for p in a.phones %}<a href="tel:+91{{ p }}">{{ p }}</a>{% if not loop.last %} | {% endif %}{% endfor %}<br>
+      <a href="mailto:{{ a.email }}">{{ a.email }}</a><br>{{ a.website }}</div>
+  </div>
+</footer>
+{% endblock %}
